@@ -7,10 +7,11 @@ import axios from 'axios';
 class Modal extends React.Component {
   state = {
     apiPostman: 'https://postman-echo.com/post',
-    apiDjango: '',
+    apiDjango: 'https://api.jakubgania.io/django-endpoint/',
     responseStatusFlag: false,
     showResponseSuccessAlert: false,
     showResponseErrorAlert: false,
+    copleteFieldsAlert: false,
     scheduleAction: 'noRepeat',
     reportName: '',
     exportReportName: '',
@@ -24,7 +25,16 @@ class Modal extends React.Component {
 
   onClose = () => {
     this.props.onClose && this.props.onClose()
+    this.resetStatuses()
   };
+
+  resetStatuses = () => {
+    this.setState({
+      showResponseSuccessAlert: false,
+      showResponseErrorAlert: false,
+      completeFieldsAlert: false
+    })
+  }
 
   handleChangeReportName = (event) => {
     this.setState({
@@ -39,6 +49,15 @@ class Modal extends React.Component {
   }
 
   submitExportReportForm = event => {
+    if (this.state.exportReportName.length === 0 || this.state.exportReportEmail.length === 0) {
+      console.log('eror')
+      this.setState({
+        completeFieldsAlert: true
+      })
+
+      return null
+    }
+    
     event.preventDefault();
 
     const exportReportFormData = {
@@ -53,7 +72,7 @@ class Modal extends React.Component {
 
     axios.post(this.state.apiPostman, { exportReportFormData })
       .then(response => {
-        if (response.data.statusCode === 200) {
+        if (response.status === 200) {
           this.setState({
             showResponseSuccessAlert: true
           })
@@ -84,7 +103,7 @@ class Modal extends React.Component {
     }
     return (
       <div className="modal-container">
-        <form>
+        <form onSubmit={this.submitExportReportForm}>
           <div className="modal-container-header">
             Export Report
           </div>
@@ -94,7 +113,7 @@ class Modal extends React.Component {
                 Report name
               </div>
               <div className="modal-container-body-section-input">
-                <input className="input" placeholder="Shareablee Report" name="exportReportName" onChange={this.handleChangeReportName} />
+                <input className="input" required placeholder="Shareablee Report" name="exportReportName" onChange={this.handleChangeReportName} />
               </div>
             </div>
             <div className="modal-container-body-item">
@@ -115,7 +134,7 @@ class Modal extends React.Component {
                 E-mail to
               </div>
               <div className="modal-container-body-section-input">
-                <input className="input" placeholder="clinet@company.com" name="exportReportEmail" onChange={this.handleChangeReportName} />
+                <input type="email" required className="input" placeholder="clinet@company.com" name="exportReportEmail" onChange={this.handleChangeReportName} />
               </div>
             </div>
             <div className="modal-container-body-item">
@@ -149,20 +168,20 @@ class Modal extends React.Component {
                 { this.state.scheduleAction === 'specificDate' &&
                   <div className="schedule-section">
                     <div className="short-input-section">
-                      <input className="input date" type="date" name="exportReportDate" onChange={this.handleChangeReportName}/>
+                      <input className="input date" type="date" value="2019-05-22" name="exportReportDate" onChange={this.handleChangeReportName}/>
                     </div>
                     <div className="at-item">
                       at
                     </div>
                     <div className="short-input-section">
-                      <input className="input" type="time" name="exportReportTime" onChange={this.handleChangeReportName}/>
+                      <input className="input" type="time" value="13:00" name="exportReportTime" onChange={this.handleChangeReportName}/>
                     </div>
                   </div>
                 }
                 
                 { this.state.scheduleAction === 'daily' &&
                   <div className="schedule-section">
-                    <input className="input" type="time" name="exportReportTime" onChange={this.handleChangeReportName}/>
+                    <input className="input" type="time" value="13:00" name="exportReportTime" onChange={this.handleChangeReportName}/>
                   </div>
                 }
                 
@@ -176,7 +195,7 @@ class Modal extends React.Component {
                         <option value="tuesday">
                           Tuesday
                         </option>
-                        <option value="wednesday">
+                        <option value="wednesday" selected>
                           Wednesday
                         </option>
                         <option value="thursday">
@@ -197,7 +216,7 @@ class Modal extends React.Component {
                       at
                     </div>
                     <div>
-                      <input className="input" type="time" name="exportReportTime" onChange={this.handleChangeReportName}/>
+                      <input className="input" type="time" value="13:00" name="exportReportTime" onChange={this.handleChangeReportName}/>
                     </div>
                   </div>
                 }
@@ -221,6 +240,12 @@ class Modal extends React.Component {
           {this.state.showResponseSuccessAlert &&
             <div className="alert success">
               Sending success
+            </div>
+          }
+
+          {this.state.copleteFieldsAlert &&
+            <div className="alert error">
+              Complete fields !
             </div>
           }
         </form>
