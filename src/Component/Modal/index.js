@@ -30,8 +30,6 @@ class Modal extends React.Component {
     this.setState({
       [event.target.name]: event.target.value
     })
-
-    console.log(this.state.exportReportName)
   }
 
   changeScheduleAction = (action) => {
@@ -59,14 +57,12 @@ class Modal extends React.Component {
           this.setState({
             showResponseSuccessAlert: true
           })
-          // this.props.showResponseSuccessAlert = true
         }
       })
       .catch((error) => {
         this.setState({
           showResponseErrorAlert: true
         })
-        // this.props.showResponseErrorAlert = false
 
         if (error.response) {
           console.log('Error data ', error.response.data);

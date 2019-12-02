@@ -7,7 +7,6 @@ class App extends React.Component {
     show: false
   };
   showModal = () => {
-    console.log('click button')
     this.setState({
       show: !this.state.show
     })
