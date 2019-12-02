@@ -6,17 +6,30 @@
   height: 40vmin;
 }
 
-.App-header {
+.App-button-container {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #09d3ac;
+.export-report-button {
+  background-color: #09d3ac;
+  color: black;
+  border: none;
+  width: 100%;
+  max-width: 280px;
+  font-weight: bold;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  letter-spacing: none;
+  transition: background-color, letter-spacing 0.2s ease-in-out;
+}
+
+.export-report-button:hover {
+  background-color: white;
+  letter-spacing: 1px;
+  transition: background-color, letter-spacing 0.2s ease-in-out;
 }
