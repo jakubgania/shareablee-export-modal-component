@@ -50,7 +50,6 @@ class Modal extends React.Component {
 
   submitExportReportForm = event => {
     if (this.state.exportReportName.length === 0 || this.state.exportReportEmail.length === 0) {
-      console.log('eror')
       this.setState({
         completeFieldsAlert: true
       })
@@ -70,9 +69,9 @@ class Modal extends React.Component {
       dayOfWeek: this.state.exportReportDayOfWeek
     }
 
-    axios.post(this.state.apiPostman, { exportReportFormData })
+    axios.post(this.state.apiDjango, { exportReportFormData })
       .then(response => {
-        if (response.status === 200) {
+        if (response.statusCode === 200) {
           this.setState({
             showResponseSuccessAlert: true
           })
