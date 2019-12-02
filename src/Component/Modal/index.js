@@ -69,7 +69,7 @@ class Modal extends React.Component {
       dayOfWeek: this.state.exportReportDayOfWeek
     }
 
-    axios.post(this.state.apiDjango, { exportReportFormData })
+    axios.post(this.state.apiPostman, { exportReportFormData })
       .then(response => {
         if (response.statusCode === 200) {
           this.setState({
